@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+# Production dependencies
+psycopg2-binary
+python-dotenv
+gunicorn
+pydantic
