@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: allaligntogether-backend
+    env: python
+    region: singapore # Optional: chose a region (singapore, oregon, frankfurt, etc.)
+    plan: free # Optional: free, starter, standard
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        sync: false # User must fill this in Render dashboard after deploying frontend (or set to * initially)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: allaligntogether-db
+          property: connectionString
+
+databases:
+  - name: allaligntogether-db
+    region: singapore # Match service region
+    plan: free # Free tier Postgres
+    databaseName: allaligntogether
+    user: allaligntogether_user
+
+# Note: Push this file to your repo. Then in Render Dashboard -> Blueprints -> New Blueprint Instance -> Select Repo.
